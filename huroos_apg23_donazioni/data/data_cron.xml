@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data >
+        <record id="import_asset_cron" model="ir.cron">
+            <field name="name">ASSET: Import Dati</field>
+            <field eval="False" name="active"/>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="model_id" ref="huroos_apg23_donazioni.model_apg_asset"/>
+            <field name="state">code</field>
+            <field name="code">model.import_asset_data()</field>
+        </record>
+    </data>
+</odoo>

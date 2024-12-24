@@ -1,0 +1,391 @@
+<odoo>
+    <record id="scheda_analytic_line_view_tree" model="ir.ui.view">
+        <field name="name">scheda_analytic_line_view_tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="arch" type="xml">
+            <tree string="Righe Analitica">
+                 <field name="date"/>
+                                        <field name="name"/>
+                                        <field name="model_account_struttura" column_invisible="1"/>
+                                        <field name="general_account_id"
+                                               string="Conto finanziario"/>
+                                        <field name="only_scheda"/>
+                                        <field name="amount" sum="Totale" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"
+                                        />
+                                        <field name="currency_id" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="scheda_tetto_form_view" model="ir.ui.view">
+        <field name="name">scheda.tetto.form</field>
+        <field name="model">scheda.tetto</field>
+        <field name="arch" type="xml">
+            <form string="Scheda Tetto">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <field name="is_initial_balance_created" invisible="1"/>
+                    <button name="button_in_approving" type="object" string="In approvazione"
+                            invisible="state != 'da_approvare'" class="btn btn-primary"/>
+                    <button name="button_approved" type="object" string="Approvato"
+                            invisible="state != 'in_approvazione'" class="btn btn-primary"/>
+                    <button name="button_to_approve" type="object" string="Da approvare"
+                            invisible="state != 'in_approvazione'"/>
+                    <button name="button_reset_to_approve" type="object" string="Riporta Da approvare"
+                        invisible="state != 'approvato'" class="btn btn-primary"/>
+                    <button string="Crea saldo iniziale"
+                            type="object"
+                            name="button_create_initial_balance"
+                            class="btn-secondary"
+                            invisible="is_initial_balance_created"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="structure_id"/>
+                        <h1>
+                            <field name="structure_id" readonly="state == 'approvato'"/>
+                        </h1>
+                    </div>
+                    <group col="3">
+                        <group>
+                            <field name="from_date" string="Dal" widget="daterange"
+                                   options="{'end_date_field': 'to_date'}" readonly="state == 'approvato'" required="1"/>
+                            <field name="to_date" invisible="1" required="1"/>
+                            <label for="budget"/>
+                            <div>
+                                <field name="used_budget" widget="monetary" options="{'currency_field': 'currency_id'}"
+                                       class="oe_inline"/>
+                                /
+                                <field name="budget"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"
+                                       class="oe_inline"
+                                       readonly="state == 'approvato'"
+                                />
+                            </div>
+                            <field name="initial_balance"
+                                   string="Saldo iniziale"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"
+                                   readonly="state == 'approvato' or is_initial_balance_created"
+                                   class="oe_inline"
+                            />
+
+
+                            <field name="month_budget" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                            <label for="copertura"/>
+                            <div>
+                                <field name="copertura" widget="monetary" options="{'currency_field': 'currency_id'}" 
+                                    class="oe_inline"/>
+                                /
+                                <field  name="budget_rientro" 
+                                        widget="monetary" 
+                                        options="{'currency_field': 'currency_id'}" 
+                                        class="oe_inline" 
+                                        readonly="state == 'approvato'"/>
+                            </div>
+
+
+                        </group>
+                        <group>
+
+                            <field name="name" placeholder="Codice Tetto"/>
+                            <field name="zona_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="analytic" string="Analitica">
+                        <!-- todo HUROOS il bottone che segue NON deve essere visibile agli ASKO -->
+                            <button string="Aggiungi righe" type='object' name='create_manual_analytic_line' class="oe_inline btn btn-link" coslpan="2"/>
+                            <group>
+                                <separator string="Righe analitica"/>
+
+                                <field name="analytic_line_ids_no_extra" mode="tree" nolabel="1" colspan="2">
+                                    <tree >
+
+                                        <field name="date"/>
+                                        <field name="name"/>
+                                        <field name="model_account_struttura" column_invisible="1"/>
+                                        <field name="general_account_id"
+                                               string="Conto finanziario"/>
+                                        <field name="only_scheda"/>
+                                        <field name="import_budget" sum="Totale" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"
+                                        />
+                                        <field name="currency_id" column_invisible="1"/>
+                                    </tree>
+                                </field>
+
+
+                                <separator string="Pagati da struttura"/>
+                                <field name="analytic_line_from_structure_ids" mode="tree" nolabel="1" colspan="2">
+                                    <tree create="0">
+                                        <field name="date"/>
+                                        <field name="name"/>
+                                        <field name="model_account_struttura" column_invisible="1"/>
+                                        <field name="general_account_id"
+                                               string="Conto finanziario"/>
+                                        <field name="import_budget" sum="Totale" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"
+
+                                        />
+                                        <field name="currency_id" column_invisible="1"/>
+                                    </tree>
+                                </field>
+
+                            </group>
+                        </page>
+                        <page string="Extra" name="extra_budget">
+                            <group col="3">
+                                <group>
+                                    <label for="extra_budget" string="Extra"/>
+                                    <div class="o_row">
+                                        <field name="extra_budget_used" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}" class="oe_inline"/>
+                                        /
+                                        <field name="extra_budget" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}" class="oe_inline"
+
+                                        />
+                                    </div>
+
+                                </group>
+
+
+                            </group>
+                            <!-- todo aggiungere filtro in base ad extra o link a vista lista dei movimenti degli extra -->
+
+                            <group>
+                                <!-- Tabella per Extra -->
+                                <separator string="Extra"/>
+                                <field name="extra_budget_lines" context="{'default_structure_id': structure_id, 'search_default_status': 'active'}" mode="tree" nolabel="1" colspan="2">
+                                    <tree editable="bottom" create="0">
+                                        <!-- <field name="sequence" nolabel="1"/> -->
+                                        <field name="name" readonly="1"/>
+                                        <field name="budget" readonly="1" sum="tot_budget" widget="monetary"
+                                            options="{'currency_field': 'currency_id'}" string="Approvato"/>
+                                        <field name="budget_used" readonly="1" sum="tot_budget" widget="monetary"
+                                            options="{'currency_field': 'currency_id'}" string="Usato"/>
+                                        <!-- questo calcolo è da RIVEDERE con GIANFRANCO
+                                        <field name="budget_received" readonly="1" sum="tot_budget" widget="monetary"
+                                                options="{'currency_field': 'currency_id'}" string="Ricevuto"/> -->
+                                        <!-- quello che segue non FUNZIONA: FEDERICO perché? -->
+                                        <field name="budget_expected" readonly="1" sum="tot_budget_expected" widget="monetary"
+                                            options="{'currency_field': 'currency_id'}" string="Rientri Previsti"/>
+                                        <field name="rientri_effettivi" readonly="1" sum="tot_budget_expected" widget="monetary"
+                                            options="{'currency_field': 'currency_id'}" string="Rientri Effettivi"/>
+                                        <field name="note"/>
+                                        <field name="tag_ids" widget="many2many_tags"/>
+                                        <field name="currency_id" column_invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <!-- <button string="Aggiungi righe" type='object' name='create_manual_analytic_line' class="oe_inline btn btn-link" coslpan="2"/> -->
+                            <group>
+                                <separator string="Movimenti"/>
+                                <field name="analytic_line_ids_extra" mode="tree" nolabel="1" colspan="2">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="name"/>
+                                        <field name="extra_budget_id" string="Collegato A"/>
+                                        <field name="general_account_id" string="Conto finanziario"/>
+                                        <field name="import_budget" sum="Totale" widget="monetary"
+                                            options="{'currency_field': 'currency_id'}"/>
+                                        <field name="currency_id" column_invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Rientri">
+                            <button name="create_manual_income_line" type="object" string="Aggiungi Riga" class="btn-primary" context="{'default_structure_id': structure_id}"/> 
+                            <br/>
+                            <field name="extra_income_lines" context="{'default_structure_id': structure_id}" readonly="1" force_save="1">
+                                <tree create="false">
+                                    <field name="date" required="1"/>
+                                    <field name="description" required="1"/>
+                                    <field name="amount" required="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="extra_budget_id"/>
+                                </tree>
+                                <form>
+                                    <field name="date"/>
+                                    <field name="description"/>
+                                    <field name="amount"/>
+                                    <field name="structure_id"/>
+                                    <field name="extra_budget_id"/>
+                                </form>
+                            </field>
+                        </page>
+
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_extra_income_line_form" model="ir.ui.view">
+        <field name="name">extra.income.line.form</field>
+        <field name="model">extra.income.line</field>
+        <field name="arch" type="xml">
+            <form string="Riga di Rientro">
+                <sheet>
+                    <group>
+                        <field name="date" required="1"/>
+                        <field name="description" required="1"/>
+                        <field name="amount" required="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="structure_id" required="1"/>
+                        <field name="extra_budget_id"/>
+                    </group>
+                    <footer>
+                        <button string="Salva" special="save" class="btn-primary"/>
+                        <button string="Annulla" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="scheda_tetto_tree_view" model="ir.ui.view">
+        <field name="name">scheda_tetto.tree</field>
+        <field name="model">scheda.tetto</field>
+        <field name="arch" type="xml">
+            <tree string="Schede Tetto">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="budget"/>
+                <field name="month_budget"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="zona_id"/>
+                <field name="structure_id"/>
+                <field name="company_id"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="scheda_tetto_search_view" model="ir.ui.view">
+        <field name="name">scheda_tetto.search</field>
+        <field name="model">scheda.tetto</field>
+        <field name="arch" type="xml">
+            <search string="Ricerca">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="budget"/>
+                <field name="to_date"/>
+                <field name="zona_id"/>
+                <field name="from_date"/>
+                <field name="company_id"/>
+                <field name="structure_id"/>
+                <field name="month_budget"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_button_approved" model="ir.actions.server">
+        <field name="name">Conferma Tetti</field>
+        <field name="model_id" ref="model_scheda_tetto"/>
+        <field name="state">code</field>
+        <field name="code">
+            for record in env['scheda.tetto'].browse(record_ids):
+                if record.state == 'da_approvare':
+                    record.button_approved()
+        </field>
+    </record>
+
+    <record id="action_server_button_approved" model="ir.actions.server">
+        <field name="name">Conferma Tetti</field>
+        <field name="model_id" ref="model_scheda_tetto"/>
+        <field name="binding_model_id" ref="model_scheda_tetto"/>
+        <field name="binding_type">action</field>
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                record.button_approved()
+    </field>
+    </record>
+
+    <record id="action_scheda_tetto" model="ir.actions.act_window">
+        <field name="name">Schede Tetto</field>
+        <field name="res_model">scheda.tetto</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Non ci sono Schede Tetto, clicca crea per aggiungerle.
+            </p>
+        </field>
+    </record>
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <record id="scheda_tetto_tag_tree_view" model="ir.ui.view">
+        <field name="name">scheda_tetto_tag.tree</field>
+        <field name="model">scheda.tetto.tag</field>
+        <field name="arch" type="xml">
+            <tree string="Etichette" editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="scheda_tetto_tag_search_view" model="ir.ui.view">
+        <field name="name">scheda_tetto_tag.search</field>
+        <field name="model">scheda.tetto.tag</field>
+        <field name="arch" type="xml">
+            <search string="Ricerca">
+                <field name="name" required="1"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_scheda_tetto_tag" model="ir.actions.act_window">
+        <field name="name">Etichette</field>
+        <field name="res_model">scheda.tetto.tag</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Non ci sono Schede Tetto Tag, clicca crea per aggiungerle.
+            </p>
+        </field>
+    </record>
+    <!--    todo - contatti o contratti?-->
+    <menuitem id="menu_scheda_tetto_root" name="Tetti &amp; Asko" sequence="3"
+              web_icon="huroos_apg23_schedatetto,static/description/icon.png"/>
+
+    <menuitem id="menu_scheda_tetto" name="Schede Tetto" parent="menu_scheda_tetto_root"
+              sequence="2"/>
+    <menuitem id="menu_schede_config" name="Configurazione" parent="menu_scheda_tetto_root" sequence="99" groups="account.group_account_manager"/>
+
+    <menuitem id="menu_scheda_tetto_tag" name="Etichette" parent="menu_schede_config"
+              action="action_scheda_tetto_tag" sequence="2"/>
+    <record id="action_analytic_line" model="ir.actions.act_window">
+        <field name="name">Movimenti Schede Tetto</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">tree,graph,pivot</field>
+        <field name="view_id" ref="huroos_apg23_schedatetto.scheda_analytic_line_view_tree"/>
+        <field name="context">{'create':0,'delete':0,'edit':0}</field>
+        <field name="domain">[('scheda_tetto_ids','!=',False)]</field>
+    </record>
+
+
+    <menuitem id="menu_scheda_righe_conti" name="Movimenti Schede Tetto" parent="menu_scheda_tetto"
+              action="action_analytic_line"
+              sequence="2"/>
+    <menuitem id="menu_open_scheda_tetto" name="Schede Tetto" parent="menu_scheda_tetto"
+              action="action_scheda_tetto"
+              sequence="1"/>
+
+</odoo>

@@ -1,0 +1,15 @@
+<odoo>
+    <record id="analitica_apg23_view_assegni_vidimati_form_inherit" model="ir.ui.view">
+        <field name="name">analitica_apg23_view_assegni_vidimati_form_inherit</field>
+        <field name="model">assegno.vidimato</field>
+        <field name="inherit_id" ref="huroos_apg23.apg23_view_assegni_vidimati_form_inherit"/>
+        <field name="arch" type="xml">
+
+            <field name="tetto_id" position="attributes">
+                <attribute name="domain">[('structure_zone_id.analytic_account_id', '=', business_unit_id)]</attribute>
+                <attribute name="readonly">not business_unit_id</attribute>
+            </field>
+
+        </field>
+    </record>
+</odoo>

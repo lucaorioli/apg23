@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="agreements_tree_view" model="ir.ui.view">
+            <field name="name">agreements.tree.view</field>
+            <field name="model">account.agreements</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="structure_id"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="amount" widget="monetary"/>
+                    <field name="period_type"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="notes" column_invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="agreements_form_view" model="ir.ui.view">
+            <field name="name">agreements.form.view</field>
+            <field name="model">account.agreements</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_plan" class="btn-primary"  type="object" string="Pianifica" />
+                        <button name="action_unplan_confirm_wizard" class="btn-danger"  type="object" string="Cancella Pianificazione" invisible="not line_ids"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="structure_id"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="amount" widget="monetary"/>
+                            </group>
+                            <group>
+                                <field name="period_type"/>
+                                <field name="to_date" invisible="1"/>
+                                <field name="from_date" string="Periodo Validità" widget="daterange" options="{'end_date_field': 'to_date'}" />
+                            </group>
+                            <notebook>
+                                <page string="Scadenziario" name="lines">
+                                    <field name="line_ids"/>
+                                </page>
+                                <page string="Note" name="notes">
+                                    <field name="notes" widget="html"/>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="agreements_line_tree_view" model="ir.ui.view">
+            <field name="name">agreements.line.tree.view</field>
+            <field name="model">account.agreements.line</field>
+            <field name="arch" type="xml">
+                <tree create="0" edit="0" decoration-muted="is_paid" default_order="date asc">
+                    <field name="date"/>
+                    <field name="amount"/>
+                    <field name="amount_paid"/>
+                    <field name="is_paid"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="agreements_line_form_view" model="ir.ui.view">
+            <field name="name">agreements.line.form.view</field>
+            <field name="model">account.agreements.line</field>
+            <field name="arch" type="xml">
+                <form string="Pagamenti">
+                    <sheet string="Pagamenti">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <field name="move_line_ids">
+                            <tree>
+                                <field name="move_id" readonly="1"/>
+                                <field name="date" readonly="1"/>
+                                <field name="name" readonly="1"/>
+                                <field name="credit" readonly="1"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="agreements_report" model="account.report">
+            <field name="name">Dashboard 410</field>
+            <field name="filter_date_range" eval="True"/>
+            <field name="filter_unfold_all" eval="False"/>
+            <field name="filter_partner" eval="True"/>
+            <field name="filter_period_comparison" eval="True"/>
+            <field name="filter_year_by_month" eval="True"/>
+            <field name="filter_hierarchy">never</field>
+            <field name="filter_show_draft" eval="False"/>
+            <field name="filter_multi_company">selector</field>
+            <field name="default_opening_date_filter">last_month</field>
+            <field name="custom_handler_model_id" ref="model_account_agreements_report_handler"/>
+            <field name="column_ids">
+                <record id="column_amount_promised" model="account.report.column">
+                    <field name="name">Promesso</field>
+                    <field name="expression_label">amount_promised</field>
+                    <field name="figure_type">float</field>
+                    <field name="sortable" eval="True"/>
+                </record>
+                <record id="column_amount_paid" model="account.report.column">
+                    <field name="name">Versato</field>
+                    <field name="expression_label">amount_paid</field>
+                    <field name="figure_type">float</field>
+                    <field name="sortable" eval="True"/>
+                </record>
+                <record id="column_amount_missing" model="account.report.column">
+                    <field name="name">Mancante</field>
+                    <field name="expression_label">amount_missing</field>
+                    <field name="figure_type">float</field>
+                    <field name="sortable" eval="True"/>
+                </record>
+            </field>
+            <field name="line_ids">
+                <record id="aged_payable_line" model="account.report.line">
+                    <field name="name">Scadenziario 410</field>
+                    <field name="groupby">partner_id</field>
+                    <field name="expression_ids">
+                        <record id="expresion_amount_promised" model="account.report.expression">
+                            <field name="label">amount_promised</field>
+                            <field name="engine">custom</field>
+                            <field name="formula">_report_custom_engine_amounts</field>
+                            <field name="subformula">amount_promised</field>
+                            <field name="auditable" eval="False"/>
+                        </record>
+                        <record id="expresion_amount_paid" model="account.report.expression">
+                            <field name="label">amount_paid</field>
+                            <field name="engine">custom</field>
+                            <field name="formula">_report_custom_engine_amounts</field>
+                            <field name="subformula">amount_paid</field>
+                            <field name="auditable" eval="False"/>
+                        </record>
+                        <record id="expresion_amount_missing" model="account.report.expression">
+                            <field name="label">amount_missing</field>
+                            <field name="engine">custom</field>
+                            <field name="formula">_report_custom_engine_amounts</field>
+                            <field name="subformula">amount_missing</field>
+                            <field name="auditable" eval="False"/>
+                        </record>
+                    </field>
+                </record>
+            </field>
+        </record>
+
+        <record id="partner_action" model="ir.actions.act_window">
+            <field name="name">Contribuenti</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="base.res_partner_kanban_view"/>
+            <field name="domain">[('is_410','=',True)]</field>
+            <field name="context">{'default_is_410':True}</field>
+        </record>
+
+        <record id="agreements_action" model="ir.actions.act_window">
+            <field name="name">Accordi</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.agreements</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="agreements_report_action" model="ir.actions.client">
+            <field name="name">Dashboard</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'report_id': ref('huroos_apg23_donazioni.agreements_report')}" />
+        </record>
+
+        <menuitem id="410_menu" name="Gestione 410" parent="account.menu_finance_entries" sequence="1">
+            <menuitem id="agreements_report_menu" name="Dashboard" action="agreements_report_action" sequence="10"/>
+            <menuitem id="agreements_menu" name="Accordi" action="agreements_action" sequence="20"/>
+            <menuitem id="partner_menu" name="Contribuenti" action="partner_action" sequence="30"/>
+        </menuitem>
+    </data>
+</odoo>

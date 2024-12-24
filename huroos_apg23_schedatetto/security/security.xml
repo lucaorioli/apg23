@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="schede_tetto_comp_rule" model="ir.rule">
+            <field name="name">Schede tetto multi company rule</field>
+            <field name="model_id" ref="model_scheda_tetto"/>
+            <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        </record>
+        <record id="budget_planning_comp_rule" model="ir.rule">
+            <field name="name">Budget multi company rule</field>
+            <field name="model_id" ref="model_budget_planning"/>
+            <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        </record>
+        <record id="budget_account_request_comp_rule" model="ir.rule">
+            <field name="name">Budget account multi company rule</field>
+            <field name="model_id" ref="model_budget_account"/>
+            <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        </record>
+
+        <!-- Structure -->
+        <record id="rule_structure_admin_request_extra_budget" model="ir.rule">
+            <field name="name">Structure admin</field>
+            <field name="model_id" ref="model_extra_budget_line"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('huroos_apg23.group_structure_admin'))]"/>
+        </record>
+
+        <record id="rule_structure_no_admin_request_extra_budget" model="ir.rule">
+            <field name="name">No structure admin</field>
+            <field name="model_id" ref="model_extra_budget_line"/>
+            <field name="domain_force">[('structure_id', 'in', user.partner_id.structure_ids.ids)]</field>
+            <field name="groups" eval="[(4, ref('huroos_apg23.group_structure_no_admin'))]"/>
+        </record>
+
+        <!-- scheda.tetto -->
+        <record id="rule_structure_admin_scheda_tetto" model="ir.rule">
+            <field name="name">Structure admin</field>
+            <field name="model_id" ref="model_scheda_tetto"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('huroos_apg23.group_structure_admin'))]"/>
+        </record>
+
+        <record id="rule_structure_no_admin_scheda_tetto" model="ir.rule">
+            <field name="name">No structure admin</field>
+            <field name="model_id" ref="model_scheda_tetto"/>
+            <field name="domain_force">[('structure_id', 'in', user.partner_id.structure_ids.ids)]</field>
+            <field name="groups" eval="[(4, ref('huroos_apg23.group_structure_no_admin'))]"/>
+        </record>
+
+        <!-- account.analytic.line -->
+        <record id="rule_structure_admin_account_analytic_line" model="ir.rule">
+            <field name="name">Structure admin</field>
+            <field name="model_id" ref="model_account_analytic_line"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('huroos_apg23.group_structure_admin'))]"/>
+        </record>
+
+        <record id="rule_structure_no_admin_account_analytic_line" model="ir.rule">
+            <field name="name">No structure admin</field>
+            <field name="model_id" ref="model_account_analytic_line"/>
+            <field name="domain_force">[('account_id.show_record', '=', True)]</field>
+            <field name="groups" eval="[(4, ref('huroos_apg23.group_structure_no_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

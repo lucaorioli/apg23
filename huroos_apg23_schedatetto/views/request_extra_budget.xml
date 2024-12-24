@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_extra_budget_line_tree" model="ir.ui.view">
+        <field name="name">extra.budget.line.tree</field>
+        <field name="model">extra.budget.line</field>
+        <field name="arch" type="xml">
+            <tree string="Extra" editable="bottom" default_order="state asc">
+                <field name="name"/>
+                <field name="structure_id"/>
+                <field name="budget"/>
+                <field name="budget_used"/>
+                <field name="budget_expected"/>
+                <field name="rientri_effettivi"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- <record id="view_extra_budget_line_search" model="ir.ui.view">
+        <field name="name">extra.budget.line.search</field>
+        <field name="model">extra.budget.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Bozza" domain="[('state', '=', 'draft')]"/>
+                <filter string="Da Approvare" domain="[('state', '=', 'to_approve')]"/>
+                <filter string="Approvato" domain="[('state', '=', 'approved')]"/>
+                <filter string="Chiuso" domain="[('state', '=', 'close')]"/>
+                <group expand="0" string="Raggruppamenti">
+                    <filter string="Zona" context="{'group_by': 'zona_id'}"/>
+                    <filter string="Stato" context="{'group_by': 'state'}"/>
+                    <filter string="Struttura" context="{'group_by': 'structure_id'}"/>
+                    <filter string="Etichette" context="{'group_by': 'tag_ids'}"/>
+                </group>
+            </search>
+        </field>
+    </record> -->
+
+
+    <record id="view_extra_budget_line_kanban" model="ir.ui.view">
+        <field name="name">extra.budget.line.kanban</field>
+        <field name="model">extra.budget.line</field>
+        <field name="arch" type="xml">
+            <kanban string="Extra">
+                <field name="name"/>
+                <field name="structure_id"/>
+                <field name="state"/>
+                <field name="budget"/>
+                <field name="budget_used"/>
+                <field name="budget_expected"/>
+                <field name="rientri_effettivi"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_record">
+                            <div>
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div>
+                                <field name="budget"/> €
+                            </div>
+                            <div>
+                                Stato: <field name="state"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_extra_budget_line" model="ir.actions.act_window">
+        <field name="name">Extra</field>
+        <field name="res_model">extra.budget.line</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <!-- <field name="search_view_id" ref="view_extra_budget_line_search"/> -->
+        <field name="help" type="html">
+            <p>
+                Crea e gestisci le linee di budget extra.
+            </p>
+        </field>
+    </record>
+
+
+    <record id="view_extra_budget_line_form" model="ir.ui.view">
+        <field name="name">extra.budget.line.form</field>
+        <field name="model">extra.budget.line</field>
+        <field name="arch" type="xml">
+            <form string="Extra Budget Line">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,cancel"/>
+                    <button string="Invia per Conferma" type="object" name="action_to_approve" invisible="state != 'draft'" class="btn btn-primary"/>
+                    <button string="Conferma" type="object" name="action_approve" invisible="state != 'to_approve'" class="btn btn-success"/>
+                    <button string="Riporta in bozza" type="object" name="action_reset_to_draft" invisible="state not in ['to_approve', 'approved']" class="btn btn-secondary"/>
+                    <button string="Chiudi" type="object" name="action_close" invisible="state not in ['approved']" class="btn btn-primary"/>
+                    <button string="Riporta a Attivo" type="object" name="action_approve" invisible="state != 'close'" class="btn btn-success"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Inserisci un nome" readonly="state in ['approved', 'close']"/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="structure_id" required="1" readonly="state in ['approved', 'close']"/>
+                            <field name="date_request" required="1" readonly="state in ['approved', 'close']"/>
+                            <field name="budget" widget="monetary" options="{'currency_field': 'currency_id'}" string="Extra Richiesto" readonly="state in ['approved', 'close']"/>
+                            <field name="budget_expected" widget="monetary" options="{'currency_field': 'currency_id'}" string="Rientro Previsto" readonly="state in ['approved', 'close']"/>
+                            <field name="rientri_effettivi" widget="monetary" options="{'currency_field': 'currency_id'}" string="Rientro Effettivo" readonly="true"/>
+                        </group>
+                        <group>
+                             <field name="note" 
+                                placeholder="Inserisci una nota" 
+                                widget="textarea" 
+                                style="width: 100%; height: 120px;" 
+                                readonly="state in ['approved', 'close']"/>
+                            <field name="state" readonly="1" string="Stato Approvazione"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_extra_budget_to_approve" model="ir.actions.server">
+        <field name="name">Invia per Conferma</field>
+        <field name="model_id" ref="model_extra_budget_line"/>
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                if record.state == 'draft':
+                    record.action_to_approve()
+        </field>
+    </record>
+
+    <record id="action_extra_budget_approve" model="ir.actions.server">
+        <field name="name">Approva</field>
+        <field name="model_id" ref="model_extra_budget_line"/>
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                if record.state == 'to_approve':
+                    record.action_approve()
+        </field>
+    </record>
+
+    <record id="action_extra_budget_close" model="ir.actions.server">
+        <field name="name">Chiudi</field>
+        <field name="model_id" ref="model_extra_budget_line"/>
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                if record.state == 'approved':
+                    record.action_close()
+        </field>
+    </record>
+
+
+
+    <menuitem id="menu_extra_budget" name="Extra"
+              parent="menu_scheda_tetto_root" sequence="10"
+              action="action_extra_budget_line"/>
+</odoo>

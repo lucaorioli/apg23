@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="project_donation_action" model="ir.actions.act_window">
+            <field name="name">Progetti</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="project_donazioni_menu"
+                  name="Progetti"
+                  parent="fund_raising_main_menu"
+                  action="huroos_apg23_donazioni.project_donation_action"
+                  sequence="2"/>
+
+    </data>
+</odoo>

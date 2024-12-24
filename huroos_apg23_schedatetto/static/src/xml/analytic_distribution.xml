@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+   <t t-name="AnalyticDistributionPopup" t-inherit="analytic.AnalyticDistributionPopup" t-inherit-mode="extension">
+       <xpath expr="//th[hasclass('numeric_column_width')]" position="before">
+               <th><span>Extra</span></th>
+       </xpath>
+       <xpath expr="//tbody//td[hasclass('numeric_column_width')][1]" position="before">
+           <td class="numeric_column_width">
+               <Field id="'extra_budget_id'" name="'extra_budget_id'" record="data.record" domain="data.record.fields.extra_budget_id.domain" />
+           </td>
+
+       </xpath>
+
+    </t>
+</templates>

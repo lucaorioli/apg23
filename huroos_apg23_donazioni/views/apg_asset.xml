@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="project_project_inherit" model="ir.ui.view">
+            <field name="name">project_project_inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="asset_id" string="ID" />
+                    <field name="sigla" string="Sigla" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Vista Tree -->
+        <record id="view_apg_asset_import_tree" model="ir.ui.view">
+            <field name="name">apg.asset.import.tree</field>
+            <field name="model">apg.asset.import</field>
+            <field name="arch" type="xml">
+                <tree string="Elenco Importazioni Asset">
+                    <field name="id_registrazione" string="ID Registrazione"/>
+                    <field name="nome" string="Nome"/>
+                    <field name="cognome" string="Cognome"/>
+                    <field name="email" string="Email"/>
+                    <field name="cellulare" string="Cellulare"/>
+                    <field name="telefono" string="Telefono"/>
+                    <field name="citta" string="Città"/>
+                    <field name="provincia" string="Provincia"/>
+                    <field name="data_pagamento" string="Data di Pagamento"/>
+                    <field name="donazione" string="Donazione"/>
+                    <field name="provider_name" string="Provider"/>
+                    <field name="provenienza" string="Provenienza"/>
+                    <field name="frequency" string="Frequenza"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form -->
+        <odoo>
+            <record id="view_apg_asset_import_form" model="ir.ui.view">
+                <field name="name">apg.asset.import.form</field>
+                <field name="model">apg.asset.import</field>
+                <field name="arch" type="xml">
+                    <form string="Dettaglio Importazione Asset">
+                        <sheet>
+                            <group>
+                                <group string="Informazioni Personali">
+                                    <field name="id_registrazione" string="ID Registrazione"/>
+                                    <field name="nome" string="Nome"/>
+                                    <field name="cognome" string="Cognome"/>
+                                    <field name="genere" string="Genere"/>
+                                    <field name="data_nascita" string="Data di Nascita"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="cellulare" string="Cellulare"/>
+                                    <field name="telefono" string="Telefono"/>
+                                </group>
+                                <group string="Indirizzo">
+                                    <field name="cap" string="CAP"/>
+                                    <field name="citta" string="Città"/>
+                                    <field name="provincia" string="Provincia"/>
+                                    <field name="indirizzo" string="Indirizzo"/>
+                                    <field name="nazione" string="Nazione"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Dati di Pagamento">
+                                    <field name="data_pagamento" string="Data di Pagamento"/>
+                                    <field name="donazione" string="Donazione"/>
+                                    <field name="provider_name" string="Provider"/>
+                                    <field name="provenienza" string="Provenienza"/>
+                                    <field name="id_transazione" string="ID Transazione"/>
+                                    <field name="codice_iban_donatore" string="Codice IBAN Donatore"/>
+                                </group>
+                                <group string="Privacy">
+                                    <field name="modello_privacy" string="Modello Privacy"/>
+                                    <field name="privacy_email" string="Privacy Email"/>
+                                    <field name="privacy_posta" string="Privacy Posta"/>
+                                    <field name="privacy_sms" string="Privacy SMS"/>
+                                    <field name="privacy_telefono" string="Privacy Telefono"/>
+                                </group>
+                                <group string="Dettagli Campagna">
+                                    <field name="codice_campagna" string="Codice Campagna"/>
+                                    <field name="codice_progetto" string="Codice Progetto"/>
+                                    <field name="descrizione" string="Descrizione"/>
+                                    <field name="frequency" string="Frequenza"/>
+                                    <field name="partita_iva" string="Partita IVA"/>
+                                    <field name="codice_fiscale" string="Codice Fiscale"/>
+                                </group>
+                                <group string="Dati Shop">
+                                    <field name="shop_order_number" string="Numero Ordine Shop"/>
+                                    <field name="shop_vendor_name" string="Nome Fornitore Shop"/>
+                                    <field name="ip_utente" string="IP Utente"/>
+                                </group>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+        </odoo>
+
+
+
+        <record id="asset_import_action" model="ir.actions.act_window">
+            <field name="name">Dati Donazioni</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">apg.asset.import</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem id="asset_import_menu"
+                  name="Dati Donazioni (WebAPG)"
+                  parent="asset_menu"
+                  action="asset_import_action"
+                  sequence="1"/>
+
+
+    </data>
+</odoo>

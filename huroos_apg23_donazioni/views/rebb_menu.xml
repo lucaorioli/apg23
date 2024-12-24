@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_rebb_banca_tree" model="ir.ui.view">
+            <field name="name">rebb.banca.tree</field>
+            <field name="model">rebb.banca</field>
+            <field name="arch" type="xml">
+                <tree string="Rebb Banca">
+                    <field name="filename" string="Nome File"/>
+                    <field name="data_valuta" string="Data Valuta"/>
+                    <field name="data_valuta_originaria" string="Data Valuta Originaria"/>
+                    <field name="data_contabile" string="Data Contabile"/>
+                    <field name="data_ordine" string="Data Ordine"/>
+                    <field name="importo" string="Importo" sum="Total Importo"/>
+                    <field name="divisa" string="Divisa"/>
+                    <field name="ordinante" string="Ordinante"/>
+                    <field name="indirizzo" string="Indirizzo"/>
+                    <field name="ragione_sociale_beneficiario" string="Ragione Sociale Beneficiario"/>
+                    <field name="motivo_pagamento" string="Motivo Pagamento"/>
+                    <field name="numero_contabile" string="Numero Contabile"/>
+                    <field name="cro" string="CRO"/>
+                    <field name="abi" string="ABI"/>
+                    <field name="cab" string="CAB"/>
+                    <field name="iban_ordinante" string="IBAN Ordinante"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista di ricerca (Search View) -->
+        <record id="view_rebb_banca_search" model="ir.ui.view">
+            <field name="name">rebb.banca.search</field>
+            <field name="model">rebb.banca</field>
+            <field name="arch" type="xml">
+                <search string="Cerca Rebb Banca">
+                    <field name="filename" string="Nome File"/>
+                    <field name="data_valuta" string="Data Valuta"/>
+                    <field name="divisa" string="Divisa"/>
+                    <field name="ordinante" string="Ordinante"/>
+                    <field name="ragione_sociale_beneficiario" string="Ragione Sociale Beneficiario"/>
+                    <field name="motivo_pagamento" string="Motivo Pagamento"/>
+
+                    <group expand="1" string="Raggruppa per">
+                        <filter name="group_by_filename" string="Nome File" context="{'group_by': 'filename'}"/>
+                        <filter name="group_by_data_valuta" string="Data Valuta" context="{'group_by': 'data_valuta'}"/>
+                        <filter name="group_by_divisa" string="Divisa" context="{'group_by': 'divisa'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Vista modulo (Form View) -->
+        <record id="view_rebb_banca_form" model="ir.ui.view">
+            <field name="name">rebb.banca.form</field>
+            <field name="model">rebb.banca</field>
+            <field name="arch" type="xml">
+                <form string="Rebb Banca">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="filename" string="Nome File"/>
+                                <field name="data_valuta" string="Data Valuta"/>
+                                <field name="data_valuta_originaria" string="Data Valuta Originaria"/>
+                                <field name="data_contabile" string="Data Contabile"/>
+                                <field name="data_ordine" string="Data Ordine"/>
+                            </group>
+                            <group>
+                                <field name="numero_bonifico" string="Numero Bonifico"/>
+                                <field name="importo" string="Importo"/>
+                                <field name="divisa" string="Divisa"/>
+                                <field name="iban_ordinante" string="IBAN Ordinante"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="ordinante" string="Ordinante"/>
+                            <field name="indirizzo" string="Indirizzo"/>
+                            <field name="ragione_sociale_beneficiario" string="Ragione Sociale Beneficiario"/>
+                            <field name="motivo_pagamento" string="Motivo Pagamento"/>
+                        </group>
+                        <group string="Dettagli Bancari">
+                            <group>
+                                <field name="abi" string="ABI"/>
+                                <field name="cab" string="CAB"/>
+                                <field name="cab_cc_estrazione" string="CAB C/C Estrazione"/>
+                                <field name="cc_estrazione" string="C/C Estrazione"/>
+                            </group>
+                            <group>
+                                <field name="numero_contabile" string="Numero Contabile"/>
+                                <field name="cro" string="CRO"/>
+                                <field name="conto_corrente_accredito" string="Conto Corrente Accredito"/>
+                                <field name="finalita_pagamento" string="Finalità Pagamento"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="record_hash" string="Hash del Record" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="rebb_action" model="ir.actions.act_window">
+            <field name="name">Rebb Banca</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rebb.banca</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="rebb_menu"
+                  name="Rebb Banca"
+                  parent="fund_raising_main_menu"
+                  action="rebb_action"
+                  sequence="5"/>
+
+    </data>
+</odoo>

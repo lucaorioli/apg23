@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+      <menuitem name="Fund Raising"
+                  id="fund_raising_main_menu"
+                  groups="account.group_account_manager"
+                  web_icon="huroos_apg23_donazioni,static/description/app_fund_raising.png"/>
+
+    </data>
+</odoo>

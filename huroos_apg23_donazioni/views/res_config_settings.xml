@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_form_view" model="ir.ui.view">
+        <field name="name">res.config.settings.form.view.donazioni</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="99"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form" position="inside">
+                <app logo="/huroos_apg23_donazioni/static/description/app_fund_raising.png" string="Donazioni" name="huroos_apg23_donazioni"
+                  >
+                    <block title="Donazioni" name="donazioni_settings_container">
+                        <setting id="donazioni_api_settings">
+                                <div class="content-group">
+                                    <label for="postal_sftp_host"/>
+                                    <div class="text-muted mb8">
+                                        This is the URL of the sftp host..
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_host"/>
+                                    </div>
+
+                                    <label for="postal_sftp_port"/>
+                                    <div class="text-muted mb8">
+                                        Porta dell'host.
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_port"
+
+                                        />
+                                    </div>
+                                    <label for="postal_sftp_path"/>
+                                    <div class="text-muted mb8">
+                                       Path Bollettini
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_path"/>
+                                    </div>
+                                    <label for="postal_sftp_history_path"/>
+                                    <div class="text-muted mb8">
+                                       Path History Bollettini
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_history_path"/>
+                                    </div>
+
+                                    <label for="postal_sftp_rebb_path"/>
+                                    <div class="text-muted mb8">
+                                       Path Rebb
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_rebb_path"/>
+                                    </div>
+                                    <label for="postal_sftp_history_rebb_path"/>
+                                    <div class="text-muted mb8">
+                                       Path History Rebb
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_history_rebb_path"/>
+                                    </div>
+
+                                    <label for="account_donation_ids"/>
+                                    <div class="text-muted mb8">
+                                       Conti Alle Donazioni (Se in Avere).
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="account_donation_ids">
+                                            <tree>
+                                                <field name="code"/>
+                                                <field name="name"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+
+                                    <label for="account_410_ids"/>
+                                    <div class="text-muted mb8">
+                                       Conti relativi alla gestione 410.
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="account_410_ids">
+                                            <tree>
+                                                <field name="code"/>
+                                                <field name="name"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+                                </div>
+                        </setting>
+                        <setting>
+                            <div class="content-group">
+
+
+                                    <label for="postal_sftp_user"/>
+                                    <div class="text-muted mb8">
+                                      User of the sftp host..
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_user"/>
+                                    </div>
+
+                                    <label for="postal_sftp_password"/>
+                                    <div class="text-muted mb8">
+                                       Password of the sftp host..
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="postal_sftp_password"/>
+                                    </div>
+
+                            </div>
+                            <button name="test_connessione_sftp"
+                                icon="fa-refresh" type="object"
+                                string="Test connessione"
+                             />
+                        </setting>
+                    </block>
+
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+<!--    <record id="huroos_milor_donazioni_settings" model="ir.actions.act_window">-->
+<!--        <field name="name">Settings</field>-->
+<!--        <field name="type">ir.actions.act_window</field>-->
+<!--        <field name="res_model">res.config.settings</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">inline</field>-->
+<!--        <field name="context">{'module' : 'huroos_milor_donazioni', 'bin_size': False}</field>-->
+<!--    </record>-->
+
+</odoo>

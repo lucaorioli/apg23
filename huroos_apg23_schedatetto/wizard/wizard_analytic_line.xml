@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="wizard_analytic_line_view_form" model="ir.ui.view">
+        <field name="name">wizard_analytic_line_view_form</field>
+        <field name="model">wizard.analytic.line</field>
+        <field name="arch" type="xml">
+            <form string="Crea righe">
+
+                    <group>
+                        <field name="analytic_line_ids" mode="tree" widget="one2many_list" context="{'default_is_manual':True}" colspan="2" nolabel="1">
+                                <tree editable="top" create="True">
+                                    <field name="date" required="1"/>
+                                    <field name="name" required="1"/>
+                                    <field name="amount" required="1"/>
+                                    <field name="only_scheda" default="True"/>
+                                    <!-- <field name="extra_budget_id" invisible="1"/> -->
+                                </tree>
+                        </field>
+
+                    </group>
+
+                 <footer>
+                    <button
+                        string="Aggiungi"
+                        name="action_confirm"
+                        type="object"
+                        class="oe_highlight"
+                    />
+
+                    <button string="Annulla" class="oe_link" type="object" name="action_cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    </data>
+</odoo>

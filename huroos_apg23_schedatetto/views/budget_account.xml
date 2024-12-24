@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_budget_account_settings">
+        <field name="name">view_account_config_settings</field>
+        <field name="model">budget.account</field>
+        <field name="arch" type="xml">
+
+            <tree string="Comportamento" editable="top" >
+                <field name="name" required="1"/>
+                <field name="budget_behavior" string="Se importo è in dare"/>
+                <field name="budget_behavior_mirror" string="Se Importo è in avere" />
+                <field name="company_id" />
+            </tree>
+
+        </field>
+    </record>
+    <record id="action_budget_account_action" model="ir.actions.act_window">
+        <field name="name">Automatismi</field>
+        <field name="res_model">budget.account</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+    <menuitem id="menu_scheda_conti_conf" name="Automatismi" parent="menu_schede_config"
+              action="action_budget_account_action"
+              sequence="2"/>
+
+</odoo>

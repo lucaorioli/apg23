@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-inherit="account_reports.AccountReportFilterDate" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('dropdown-divider')]" position="after">
+            <DropdownItem
+                class="{ 'filter_date_last_year_by_month_hook': true, 'selected': (controller.options.date.filter == 'last_year_by_month') }"
+                onSelected="() => this.updateFilter('date.filter', 'last_year_by_month')"
+            >
+                Anno Precedente
+            </DropdownItem>
+
+            <DropdownItem
+                class="{ 'filter_date_this_year_by_month_hook': true, 'selected': (controller.options.date.filter == 'this_year_by_month') }"
+                onSelected="() => this.updateFilter('date.filter', 'this_year_by_month')"
+            >
+                Questo Anno
+            </DropdownItem>
+
+            <DropdownItem
+                class="{ 'filter_date_next_year_by_month_hook': true, 'selected': (controller.options.date.filter == 'next_year_by_month') }"
+                onSelected="() => this.updateFilter('date.filter', 'next_year_by_month')"
+            >
+                Anno Prossimo
+            </DropdownItem>
+            <div class="dropdown-divider"/>
+        </xpath>
+    </t>
+</templates>

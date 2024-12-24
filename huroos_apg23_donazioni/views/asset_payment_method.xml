@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="asset_payment_method_inherit" model="ir.ui.view">
+            <field name="name">asset_payment_method_inherit</field>
+            <field name="model">asset.payment.method</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="id_odoo" string="ID Odoo" />
+                    <field name="id_asset" string="ID Asset" />
+                    <field name="payment_name" string="Metodo di Pagamento" />
+                    <field name="account_journal" string="Registro" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="asset_payment_method_action" model="ir.actions.act_window">
+            <field name="name">Metodi di Pagamento</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">asset.payment.method</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="asset_menu"
+                  name="Asset"
+                  parent="fund_raising_main_menu"
+                  sequence="10"/>
+
+        <menuitem id="asset_payment_method_menu"
+                  name="Metodi di Pagamento"
+                  parent="asset_menu"
+                  action="asset_payment_method_action"
+                  sequence="1"/>
+
+
+    </data>
+</odoo>

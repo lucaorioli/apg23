@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="budget_planning_form_view" model="ir.ui.view">
+            <field name="name">budget_planning.form</field>
+            <field name="model">budget.planning</field>
+            <field name="arch" type="xml">
+                <form string="Richiesta Tetti">
+                    <header>
+                        <field name="is_processed" invisible="1"/>
+                        <button name="create_scheda_tetto" type="object" string="Crea schede" invisible="is_processed or not line_ids" class="btn btn-primary"/>
+                        <button string="Assegna strutture"
+                                    name="assign_structure"
+                                    type="object"
+                                    class="btn btn-primary"
+                                    invisible="line_ids"
+                                    />
+
+                    </header>
+                    <sheet>
+                         <div class="oe_button_box" name="button_box">
+                        <button name="show_scheda_tetto" type="object" class="oe_stat_button"
+                                icon="fa-book">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="scheda_tetto_count" readonly="1"/>
+                                </span>
+                                <span class="o_stat_text">Schede</span>
+                            </div>
+                        </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Titolo" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="from_date" string="Dal"/>
+                                <div>
+                                    <field name="from_date"
+                                           widget="daterange"
+                                           options="{'end_date_field': 'to_date'}"
+                                           class="oe_inline"
+                                           colspan="4"
+                                           required="1"
+                                    />
+                                    <field name="to_date" invisible="1" required="1"/>
+                                </div>
+
+
+                            </group>
+
+                        </group>
+                        <group>
+                            <group class="o_row" >
+
+                                <field name="budget_total"
+                                        class="oe_inline"/>
+
+                                <button name="assign_budget"
+                                        type="object"
+                                        string="Riporta su righe"
+                                        class="btn btn-link w-100"
+                                        invisible="not line_ids"
+                                        colspan="4"
+                                />
+
+                            </group>
+
+
+
+                        </group>
+                        
+                        <group>
+                            <group class="o_row" >
+
+                                <field name="budget_total_rientro"
+                                        class="oe_inline"/>
+
+                            </group>
+
+                        </group>
+
+                        <notebook>
+                            <page name="line_budget" string="Righe" invisible="not line_ids">
+                                <field name="line_ids" mode="tree">
+                                    <tree editable="bottom">
+                                        <field name="name" options="{'no_create':True}" required="1"/>
+                                        <field name="budget"/>
+                                        <field name="budget_rientro"/>
+                                        <field name="scheda_tetto_id" options="{'no_create':True,'no_open':True}"/>
+                                    </tree>
+
+                                </field>
+                            </page>
+
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="budget_planning_tree_view" model="ir.ui.view">
+            <field name="name">budget_planning.tree</field>
+            <field name="model">budget.planning</field>
+            <field name="arch" type="xml">
+                <tree string="Pianificazione Tetti">
+                    <field name="name"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="budget_planning_search_view" model="ir.ui.view">
+            <field name="name">budget_planning.search</field>
+            <field name="model">budget.planning</field>
+            <field name="arch" type="xml">
+                <search string="Ricerca">
+                    <field name="name"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="budget_planning_act_window" model="ir.actions.act_window">
+            <field name="name">Pianificazione Tetti</field>
+            <field name="res_model">budget.planning</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no budget planned click "create" to add a new one.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="budget_planning_menu" name="Richiesta Tetti"  parent="menu_scheda_tetto_root" sequence="3" action="budget_planning_act_window" />
+
+    </data>
+</odoo>

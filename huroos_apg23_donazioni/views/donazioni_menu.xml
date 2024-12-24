@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+
+        <!-- Vista Tree -->
+        <record id="view_donazione_tree" model="ir.ui.view">
+            <field name="name">donazione.donazione.tree</field>
+            <field name="model">donazione.donazione</field>
+            <field name="arch" type="xml">
+                <tree string="Donazioni" js_class="donazione_list_view" create="1" delete="1">
+                    <!-- Codice in grassetto -->
+                    <field name="code" string="Codice" />
+                    <!-- Canale -->
+                    <field name="channel" string="Canale" />
+                    <!-- Partner -->
+                    <field name="partner_id" string="Partner" />
+                    <!-- Importo -->
+                    <field name="amount" string="Importo" />
+                    <!-- Stato come badge -->
+                    <field name="state" string="Stato" widget="statusbar" />
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- Vista Form -->
+        <record id="view_donazione_form" model="ir.ui.view">
+            <field name="name">donazione.donazione.form</field>
+            <field name="model">donazione.donazione</field>
+            <field name="arch" type="xml">
+                <form string="Donazione">
+                    <sheet>
+                        <group>
+                            <h1><strong><field name="code" nolabel="1" readonly="1"/></strong></h1>
+                        </group>
+                        <group>
+                            <group string="Dettagli Donazione">
+                                <field name="channel" string="Canale"/>
+                                <field name="state" string="Stato"/>
+                            </group>
+                            <group string="Informazioni Collegate">
+                                <field name="webapg_id" string="WebAPG"/>
+                                <field name="rebb_id" string="Rendiconto REBB"/>
+                                <field name="bollettini_ids" string="Bollettini Postali" widget="many2many_tags"/>
+                            </group>
+                        </group>
+
+                        <!-- Gruppo Esistente: Dati Contabili -->
+                        <group string="Dati Contabili">
+                            <group>
+                                <field name="move_line_id" string="Riga Movimento"/>
+                                <field name="move_id" string="Registrazione"/>
+                                <field name="details_move_id" string="Registrazione Dettagli" />
+                            </group>
+                            <group>
+                                <field name="amount" string="Importo"/>
+                                <field name="partner_id" string="Partner"/>
+                            </group>
+                        </group>
+
+                        <!-- Nuovo Gruppo: Dati per Asset -->
+                        <group string="Dati per Asset" col="2">
+                            <group>
+                                <field name="data_immissione" string="Data Immissione"/>
+                                <field name="procedura" string="Procedura"/>
+                                <field name="id_web" string="ID Web"/>
+                                <field name="data_web" string="Data Web"/>
+                                <field name="ip_utente" string="IP Utente"/>
+                                <field name="provenienza" string="Provenienza"/>
+                                <field name="tipo_utente" string="Tipo Utente"/>
+                                <field name="citta" string="Città"/>
+                                <field name="provincia" string="Provincia"/>
+                                <field name="regione" string="Regione"/>
+                                <field name="nazione" string="Nazione"/>
+                                <field name="genere" string="Genere"/>
+                                <field name="nome_completo" string="Nome Completo"/>
+                                <field name="nome" string="Nome"/>
+                                <field name="cognome" string="Cognome"/>
+                            </group>
+                            <group>
+                                <field name="ragione_sociale" string="Ragione Sociale"/>
+                                <field name="email" string="Email"/>
+                                <field name="telefono" string="Telefono"/>
+                                <field name="cellulare" string="Cellulare"/>
+                                <field name="indirizzo_completo" string="Indirizzo Completo"/>
+                                <field name="indirizzo" string="Indirizzo"/>
+                                <field name="civico" string="Civico"/>
+                                <field name="cap" string="CAP"/>
+                                <field name="data_nascita" string="Data di Nascita"/>
+                                <field name="codice_fiscale" string="Codice Fiscale"/>
+                                <field name="partita_iva" string="Partita IVA"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <record id="donation_action" model="ir.actions.act_window">
+            <field name="name">Donazioni</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">donazione.donazione</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <menuitem id="donation_menu"
+                  name="Donazioni"
+                  parent="fund_raising_main_menu"
+                  action="donation_action"
+                  sequence="1"/>
+
+    </data>
+</odoo>

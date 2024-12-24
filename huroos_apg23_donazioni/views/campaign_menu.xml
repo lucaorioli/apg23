@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="campagna_view_tree" model="ir.ui.view">
+            <field name="name">campagna_view_tree</field>
+            <field name="model">campagna.campagna</field>
+            <field name="arch" type="xml">
+                <tree string="campagna_tree">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+        <record id="campagna_view_form" model="ir.ui.view">
+            <field name="name">campagna_view_form</field>
+            <field name="model">campagna.campagna</field>
+            <field name="arch" type="xml">
+                <form string="Campagna">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="campaign_donation_action" model="ir.actions.act_window">
+            <field name="name">Campagne</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">campagna.campagna</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="campaign_donazioni_menu"
+                  name="Campagne"
+                  parent="fund_raising_main_menu"
+                  action="huroos_apg23_donazioni.campaign_donation_action"
+                  sequence="3"/>
+
+    </data>
+</odoo>

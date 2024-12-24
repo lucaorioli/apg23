@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_campagna_campagna,access.campagna.campagna,model_campagna_campagna,base.group_user,1,1,1,1
+access_account_agreements,access.account.agreements,model_account_agreements,base.group_user,1,1,1,1
+access_account_agreements_line,access.account.agreements.line,model_account_agreements_line,base.group_user,1,1,1,1
+access_confirmation_wizard,access.confirmation.wizard.line,model_confirmation_wizard,base.group_user,1,1,1,1
+access_asset_payment_method,access.asset.payment,model_asset_payment_method,base.group_user,1,1,1,1
+access_apg_asset,access.apg_asset,model_apg_asset,base.group_user,1,1,1,1
+access_apg_asset_import,access.apg_asset_import,model_apg_asset_import,base.group_user,1,1,1,1
+access_rebb_banca,access.apg_rebb_banca,model_rebb_banca,base.group_user,1,1,1,1
+access_donazione_donazione,access.apg_donazione_donazione,model_donazione_donazione,base.group_user,1,1,1,1

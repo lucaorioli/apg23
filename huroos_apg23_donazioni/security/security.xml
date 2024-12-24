@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="campagna_campagna_comp_rule" model="ir.rule">
+            <field name="name">Campagna multi company rule</field>
+            <field name="model_id" ref="model_campagna_campagna"/>
+            <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        </record>
+    </data>
+</odoo>

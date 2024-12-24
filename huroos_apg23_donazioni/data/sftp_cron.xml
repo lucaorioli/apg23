@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data >
+        <record id="import_bollettini_sftp_cron" model="ir.cron">
+            <field name="name">Importa Bollettini Sftp</field>
+            <field eval="False" name="active"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="model_id" ref="huroos_apg23_editore.model_bollettini_postali"/>
+            <field name="state">code</field>
+            <field name="code">model.download_files_from_sftp()</field>
+        </record>
+    </data>
+</odoo>

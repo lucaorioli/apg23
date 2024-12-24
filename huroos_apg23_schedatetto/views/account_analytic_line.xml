@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="analytic.account_analytic_line_action_entries" model="ir.actions.act_window">
+            <field name="domain">[('only_scheda','=',False)]</field>
+        </record>
+
+
+
+        <record id="view_account_analytic_line_form" model="ir.ui.view">
+            <field name="name">view_account_analytic_line_form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="amount_with_tax" string="Importo Con Tasse" />
+                    <field name="struttura_account_id" string="Struttura" options="{'no_create': True}" />
+                    <field name="extra_budget_id" string="Extra" options="{'no_create': True}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

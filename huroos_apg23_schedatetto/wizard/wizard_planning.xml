@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="wizard_planning_view_form" model="ir.ui.view">
+            <field name="name">wizard_planning_view_form</field>
+            <field name="model">wizard.planning</field>
+            <field name="arch" type="xml">
+                <form string="Assegna strutture">
+                    <group>
+                        <!-- Campo per selezionare la zona -->
+                        <field name="structure_zone_id" options="{'no_create': True}" placeholder="Seleziona una zona"/>
+                        
+                        <!-- Campo per visualizzare le strutture -->
+                        <field name="structure_ids" widget="many2many_tags"/>
+                    </group>
+
+                    <footer>
+                        <button
+                            string="Conferma"
+                            name="save_planning"
+                            type="object"
+                            class="oe_highlight"
+                        />
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

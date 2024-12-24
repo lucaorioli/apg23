@@ -1,0 +1,62 @@
+<odoo>
+
+
+    <record model="ir.ui.view" id="view_asko_form">
+        <field name="name">view_asko_form</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" string="Registrazione" readonly="1"/>
+                            <field name="company_id" string="Azienda" />
+                            <field name="suitable_journal_ids" invisible="1" />
+                            <field name="currency_id" invisible="1" />
+                        </group>
+                        <group>
+                            <field name="date" string="Data"/>
+                            <field name="journal_id" string="Registro" context="{'default_journal_id': False}" domain="[('code', '=', 'RGZON')]"/>
+                            <field name="ref" string="Riferimento" />
+                            <field name="account_move_template" string="Template" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Movimenti">
+                            <field name="line_ids" string="Movimenti">
+                                <tree editable="bottom">
+                                    <field name="account_id" string="Conto" />
+                                    <field name="partner_id" string="Partner"/>
+                                    <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting" optional="show" options="{'account_field': 'account_id'}" business_domain_compute="parent.move_type in ['out_invoice', 'out_refund', 'out_receipt'] and 'invoice' or parent.move_type in ['in_invoice', 'in_refund', 'in_receipt'] and 'bill' or 'general'"/>
+                                    <field name="date_maturity" string="Data Scadenza"/>
+                                    <field name="debit" string="Dare" sum="Total"/>
+                                    <field name="credit" string="Avere" sum="Total"/>
+                                    <field name="company_id" column_invisible="True" />
+                                    <field name="currency_id" column_invisible="True" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_primanota_asko" model="ir.actions.act_window">
+        <field name="name">Prima Nota</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_journal_id': False}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                                   (0, 0, {'view_mode': 'tree', 'view_id': ref('account.view_move_tree')}),
+                                   (0, 0, {'view_mode': 'form', 'view_id': ref('view_asko_form')})]"/>
+    </record>
+
+    <menuitem id="menu_asko_prima_nota" name="Prima Nota" parent="menu_scheda_tetto_root" action="action_primanota_asko" sequence="50"/>
+
+    <menuitem id="menu_assbon_asko" name="Assegni/Bonifici" sequence="60" parent="menu_scheda_tetto_root"/>
+    <menuitem id="menu_richiesta_assvid" name="Richiesta assegno/bonifico" parent="menu_assbon_asko" action="huroos_assvid_bondom.action_assvid_bondom_request" sequence="1"/>
+    <menuitem id="menu_assegni_vidimati" name="Elenco Assegni" parent="menu_assbon_asko" action="huroos_assvid_bondom.action_assegni_vidimati_tree" sequence="2"/>
+    <menuitem id="menu_bonifici_domiciliati" name="Elenco Bonifici" parent="menu_assbon_asko" action="huroos_assvid_bondom.action_bonifico_domiciliato_tree" sequence="3"/>
+
+</odoo>

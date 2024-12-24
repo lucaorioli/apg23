@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="postal_bulletin_donation_action" model="ir.actions.act_window">
+        <field name="name">Bollettini Postali</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bollettini.postali</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_donation','=',True)]</field>
+        <field name="context">{'create':True,'delete':True}</field>
+    </record>
+
+
+    <record id="huroos_apg23_editore.editore_bollettini_action" model="ir.actions.act_window">
+        <field name="domain">[('is_donation','=',False)]</field>
+    </record>
+
+    <menuitem id="bollettini_postali_donazioni_menu"
+              name="Bollettini"
+              parent="fund_raising_main_menu"
+              action="huroos_apg23_donazioni.postal_bulletin_donation_action"
+              sequence="4"/>
+</odoo>
